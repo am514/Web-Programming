@@ -109,3 +109,30 @@ body{
 .fas{
     font-size: 80px;
 }
+#gamebox{
+    padding: 0px;
+    margin: auto;
+    width: 800px;
+    height: 800px;
+    border: 1px solid white;
+    overflow: hidden;
+}
+.nav_bar{
+    margin: 0px;
+    padding: 20px;
+}
+
+#block{
+    width: 50px;
+    height: 20px;
+    background-color: white;
+    position: relative;
+    top: 100px;
+    left: 100px;
+    animation: block 2s infinite linear;
+}
+
+@keyframes block{
+    0%{top: 0px}
+    100%{top: 780px}
+}
