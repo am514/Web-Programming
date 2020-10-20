@@ -6,18 +6,16 @@
     box-sizing: border-box;
 }
 
-html{
+html h1{
     font-size: 10px;
     font-family: "Lato", Arial, sans-serif;
 }
 
-
 .container-top{
     margin: 0;
     padding: 0;
-
-    
 }
+
 .title{
     text-align: center;
     font-size: 5rem;
@@ -51,8 +49,8 @@ html{
     padding: 8px 0;
     margin: 8px 0;
     border-bottom: 1px solid #ff99ff;
-
 }
+
 .textbox i{
     width: 26px;
     float: left;
@@ -70,6 +68,7 @@ html{
     margin: 0 10px;
 
 }
+
 .btn{
     width: 100%;
     background: none;
@@ -81,7 +80,6 @@ html{
     margin: 12px 0;
 
 }
-
 
 body{
     width: 100%;
@@ -132,7 +130,9 @@ body{
     animation: block 2s infinite linear;
 }
 
+
 @keyframes block{
     0%{top: 0px}
     100%{top: 780px}
 }
+

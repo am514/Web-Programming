@@ -4,5 +4,6 @@ var block =  document.getElementById("block");
 block.addEventListener('animationiteration', () => {
    // iterationCount++;
     var random = (Math.random() * 800);
-    block.style.left = random +"px";
+    var random2 = (Math.random(), random);
+    block.style.left = random2 +"px";
 });
