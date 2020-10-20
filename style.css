@@ -130,9 +130,18 @@ body{
     animation: block 2s infinite linear;
 }
 
+#character{
+    width: 40px;
+    height: 20px;
+    background-color: green;
+    position:absolute;
+    bottom:18px;
+    left: 450px;
+
+}
+
 
 @keyframes block{
     0%{top: 0px}
     100%{top: 780px}
 }
-
