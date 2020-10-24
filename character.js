@@ -1,6 +1,6 @@
-var character =  document.getElementById("character");
+let character =  document.getElementById("character");
 
-var move = 0;
+let move = 0;
 
 function movePlayer(e) {
     if(e.keyCode == 37) {
