@@ -138,12 +138,16 @@ body{
     background-color: green;
     position: relative;
     left: 0px;
-    top: 758px;
+    top: 780px;
+    z-index: 1000;
 
 }
-
 
 @keyframes block{
     0%{top: 0px}
     100%{top: 780px}
 }
+
+
+
+
