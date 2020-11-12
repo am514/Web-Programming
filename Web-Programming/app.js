@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
 app.post('/insert', (request, response) =>{
-    
+
 });
 
 app.get('/validate', (request, response) => {
@@ -30,6 +30,14 @@ app.get('/getAll', (request, response) => {
     .catch(err=> console.log(err));
 
 });
+
+// Mubeen code
+
+//list of sockets
+var SOCKET_LIST = {};
+// list of players
+var PLAYER_LIST = {};
+
 //----MUBEEN---- Under here is the socket code for you, everything above is to provide some abstracted connection
 //to the database I have inside. I will knit in the socket connections as well, but for now add whatever
 //you need here and I will work it in as it appears. I have shifted the actual server connection here as well
@@ -45,6 +53,13 @@ var chatGen = false;
 var numSock = 0;
 tmpMSG = [];
 sock.sockets.on('connection', function(socket){
+    // creates an id for a new spcket
+    socket.id = Math.random();
+    // adds it to the list of sockets
+    SOCKET_LIST[socket.id] = socket;
+    // for a new player
+    var player = Player(socket.id);
+	  PLAYER_LIST[socket.id] = player;
     //Keeps tabs of the total number of people are connected to the socket.
     numSock++;
     //TEMP: let us know if someone connects and then post the total, delete after done testing the socket connections
@@ -54,10 +69,20 @@ sock.sockets.on('connection', function(socket){
 sock.sockets.on('disconnect', function(socket){
     //Keeps tabs of total number of people connected to the socket.
     numSock--;
+    // deletes the socket and player from the arrays
+    delete SOCKET_LIST[socket.id];
+		delete PLAYER_LIST[socket.id];
     //TEMP: Let us know if someone has disconnected and then post the total, delete after done testing the socket connections
     //or transition this into an update that will be listed on the chat in a non-obtrusive way
     sock.sockets.emit("User disconnected, total online " + numSock);
 });
+// for movement for player object
+socket.on('keyPress',function(data){
+		if(data.inputId === 'left')
+			player.pressingLeft = data.state;
+		else if(data.inputId === 'right')
+			player.pressingRight = data.state;
+	});
 //This next bit is for the use of the socket for the chat app.
 //The message is going to require the given users username so when the messages are emitted
 //they contain the username and message.
