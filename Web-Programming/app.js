@@ -52,6 +52,29 @@ var msgDb = mysql.createConnection({
 var chatGen = false;
 var numSock = 0;
 tmpMSG = [];
+
+// This is for creating the player
+var Player = function(id){
+	var self = {
+		x:0,
+		y:0,
+		id:id,
+		number:"" + Math.floor(10 * Math.random()),
+		pressingRight:false,
+		pressingLeft:false,
+		maxSpd:10,
+	}
+  // for updating their movement
+	self.updatePosition = function(){
+		if(self.pressingRight)
+			self.x += self.maxSpd;
+		if(self.pressingLeft)
+			self.x -= self.maxSpd;
+	}
+	return self;
+}
+
+
 sock.sockets.on('connection', function(socket){
     // creates an id for a new spcket
     socket.id = Math.random();
