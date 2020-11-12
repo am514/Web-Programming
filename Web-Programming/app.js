@@ -134,6 +134,29 @@ sock.on('newMove', function(move){
     sock.emit('newMove', move)
 })
 
+// updates all the players positon by running every 50 milliseconds
+// (20fps)
+setInterval(function(){
+	var pack = [];
+	for(var i in PLAYER_LIST){
+		var player = PLAYER_LIST[i];
+		player.updatePosition();
+		pack.push({
+			x:player.x,
+			y:player.y,
+			number:player.number
+		});
+	}
+	for(var i in SOCKET_LIST){
+		var socket = SOCKET_LIST[i];
+		socket.emit('newPositions',pack);
+	}
+
+
+
+
+},1000/20);
+
 
 
 app.listen(process.env.PORT, () => console.log('app is running'));
