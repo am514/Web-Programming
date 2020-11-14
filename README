@@ -1,9 +1,19 @@
 
 FALLING BLOCKS GAME README
 Game Description:
+-Falling Blocks is a competitive block dodging game. Each user will attempt to achieve the highest score on the leaderboard for the rank and prestige associated with it.
+-Players must contend with a series of random falling objects trying to slay the player and end their score, each block dodged provides points to the player.
+-At the same time the player can see the actions of another play while they play and have that as an additional distraction.
+
+Potential Add-Ons: 
+ChatBox: Will allow all players who are in the game to communicate with one another, discuss strategies, and set up games.
+Head to Head: Would allow players to play one on one against each other to see who can survive the longest in a progressively more challenging block falling competition!
+Individual Server Setup: Would be a ServerConfig.exe, which with the right files downloaded would allow the user to create and host their own server. This server would then be added
+to a list of playable servers.
 
 Connecting to Server:
+Open the login page, log in to the game or make an account and then join a game!
 
 Server Setup:
 
-DataBase Setup
+DataBase Setup:
