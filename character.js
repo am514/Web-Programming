@@ -11,18 +11,27 @@ let both = 0;
 
 
 function moveLeft(){
-
+    
     let left = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
-    if(left > 0 ){
-        character.style.left = left - 2 + "px";
+    let speed = 2;
+    if(left > -40 ){
+        character.style.left = left - speed + "px";
     }
+    else{
+        character.style.left = 800 + "px";
+    }
+    
     
 }
 
 function moveRight(){
+    let speed = 2;
     let left = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
-    if (left < 760 ){
-        character.style.left = left + 2 + "px";
+    if (left < 800 ){
+        character.style.left = left + speed + "px";
+    }
+    else{
+        character.style.left = 0 + "px";
     }
     
 }
@@ -32,11 +41,11 @@ document.addEventListener("keydown", event => {
     if(both == 0){
         both++;
         if(event.key === "ArrowLeft"){
-            interval= setInterval(moveLeft, 1);
+            interval = setInterval(moveLeft, 1);
 
         }
         if(event.key === "ArrowRight"){
-            interval= setInterval(moveRight, 1);
+            interval = setInterval(moveRight, 1);
         
         }
     }
