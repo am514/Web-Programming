@@ -16,13 +16,18 @@
         <div class = "container-mainbody">
             <div class = "playerDetails">
                 <div class ="login">
-                    <h1>Player Details</h1>
+                    <h1>Player Login</h1>
                 </div>
 
                 <div class = "textbox" >
                     <i class = "fa fa-lock" aria-hidden = "true"></i>
                     <input type = "text" placeholder="Name" name ="playerName">
+                    
 
+                </div>
+                <div class = "textbox">
+                    <i class = "fa fa-lock" aria-hidden = "true"></i>
+                    <input type = "password" placeholder ="Password" password ="password">
                 </div>
                 <!--
                 <div class = "textbox">
@@ -31,8 +36,13 @@
                 </div>
                 -->
                 <div class = "start_game">
-                    <a href = "gamePage.html">
-                        <input class = "btn" type = "button" name="start" value = "Start Game">
+                    <a href = "welcome.html">
+                        <input class = "btn" type = "button" name="start" value = "Login">
+                    </a>
+                </div>
+                <div class ="start_game">
+                    <a href = "register.html">
+                        <input class ="btn" type = "button" name = "register" value= "Make Account">
                     </a>
                 </div>
                 
@@ -42,4 +52,5 @@
 
 
     </body>
+    <script src = "login.js"></script>
 </html>

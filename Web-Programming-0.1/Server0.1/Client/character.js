@@ -16,6 +16,7 @@ function moveLeft(){
     let speed = 2;
     if(left > -40 ){
         character.style.left = left - speed + "px";
+        //socket.emit('keyPress',{inputId:'left',state:true});
     }
     else{
         character.style.left = 800 + "px";
@@ -29,6 +30,7 @@ function moveRight(){
     let left = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
     if (left < 800 ){
         character.style.left = left + speed + "px";
+        //socket.emit('keyPress',{inputId:'right',state:true});
     }
     else{
         character.style.left = 0 + "px";
