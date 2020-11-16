@@ -1,5 +1,7 @@
 
 FALLING BLOCKS GAME README
+File Structure: Web Programming represents the code present prior to decision to refactor all client side code, lacks full representation of functionality and system.
+Web-Programming0.1 represents code state from 15/11/2020 on. On completion of integration will represent the full prototype.
 Game Description:
 -Falling Blocks is a competitive block dodging game. Each user will attempt to achieve the highest score on the leaderboard for the rank and prestige associated with it.
 -Players must contend with a series of random falling objects trying to slay the player and end their score, each block dodged provides points to the player.
