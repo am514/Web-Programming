@@ -17,5 +17,13 @@ Connecting to Server:
 Open the login page, log in to the game or make an account and then join a game!
 
 Server Setup:
-
-DataBase Setup:
+Server setup is simple. In the event a person would like to utilize the code herein to start their own server there are 8 steps.
+1:Download MySQL, and Node.JS
+2:In node.js, install the packages found in the package.json file and make sure they are up to date.
+3:Using Xampp, MySQL Editor, or the terminal, create two databases, one for score management, and one for user validation. The names are unimportant but will be needed later.
+4: Configure a .env file to contain, the port being used, the names of both databases, the name/s or the user accounts with priviliges to the SQL databases and the host. Utilize the 
+names used in the other parts of the file, or create your own and update the files accordingly.
+5: Initialize nodemon server (nodemon is used to allow continual updates to the code and to allow for simpler restarts)
+6: Download localtunnel.me.
+7: Make Http tunnel using localtunnel and point it at the port your nodemon server is set to. 
+8: Post the link to your localtunnel domain and let people know where to play on your server!
