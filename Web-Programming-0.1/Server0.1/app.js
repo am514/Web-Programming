@@ -1,36 +1,206 @@
+//<--- INITIALIZATION CODE --->
+//All the packages required and external files that are going to be used by the system.
 const mysql = require('mysql');
 const express = require('express');
 const app = express();
+//Allow for use of cookies and other session specific commands (Whether a user has logged in or not and keeping the session data secret)
+const session = require('express-session');
+//Pretty self explanatory, need this to parse the code sent to the server in order to extract the relevant
+//data.
+const bodyParser = require('body-parser');
 const cors = require('cors');
+//Using dotenv to conceal my configuration choices from people who don't need to know.
 const dotenv = require('dotenv');
 dotenv.config();
-//sssssws
+//ssssswsss
+//Gets the leaderboard database code
 const dbCall = require('./dbCall');
-const http = require("http")
+//Gets the user validation code to check and add users to the db
+const userVal = require('./validate');
+//Get access to http
+const http = require("http");
+const { response } = require('express');
+//Get access to fs
 const fs = require('fs').promises;
+//Require socket for more immediate back and forth communications between players on 5432
 var sock = require('socket.io').listen(5432);
 
+//Setting which modules inside of Express are going to be used.
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
+//<-- INITIALIZATION CODE AS IT RELATES TO THE VALIDATION AND REGISTRATION OF USERS -->
+
+//Will be hashing the user passwords
+const bcrypt = require('bcrypt');
+
+
+//Session will track if someone is logged in or not and allow them to access the site as such.
+app.use(session({
+	secret: 'Porsmmzs13445.219./+dsmazndfjglasmz',
+	resave: true,
+	saveUninitialized: true
+}));
+//bodyParser is what will be used to extract the data we need from user form submissions
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+//Connection to the user validation db
+const connection = mysql.createConnection({
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.USERVALDB,
+    port: process.env.DB_PORT
+});
+
+//<--- NON INITIALIZATION CODE --->
+//Actual calls on the server and the responses fed from it to the client.
+
+
 app.use(express.static(__dirname + '/Client'))
 //This call will serve the gamePage for now
 app.get("/playgame", function(req, res){
-res.sendFile(__dirname + '/Client/gamePage.html');
+
+    res.sendFile(__dirname + '/Client/gamePage.html');
 });
-app.get("/login", function(req, res){
-res.sendFile(__dirname +'/Client/index.html')
+//When the user calls "/" they will be taken to the index page, unless they have a valid session.
+app.get("/", function(req, res){
+    if(session.loggedin == true){
+        res.redirect('welcome.html');
+    }else{
+        res.sendFile(__dirname +'/Client/index.html')
+    }
 } );
 
-app.post('/insert', (request, response) =>{
+//This is the login code and dictates if someone logs in or not.
+app.post("/auth", async function(req, res){
+    //These variables are for the username and the password pulled from the request.
+    var playerName = req.body.playerName;
+    var password = req.body.password;
+
+    console.log(playerName);
+    console.log(password);
+    //If the password and username sections are filled out then we check if it is a valid username.
+    if(password && playerName){
+        //SQL query, to grab the password associated with a given username.
+        connection.query('SELECT password FROM userval WHERE username = ?', [playerName], async function(error, results, fields) {
+            if(error) throw error;
+           //If there are no results don't bother doing any checks, send them to error page.
+            if (results.length > 0) { 
+                //console.log(req.body.password);
+                //console.log(results[0].password);
+                
+                //Check the validity of pass hash and store it as a boolean
+                const match = await bcrypt.compare(req.body.password, results[0].password);
+                //If the hash is a valid hash
+                if(match){
+                    console.log('Success')
+                    //Sets the session id (cookie) to true so the player can access other sections of the site.
+                    req.session.loggedin = true;
+                    //sets the session username to the one given by the player(For the welcome page to make it more personalized)
+                    req.session.username = playerName;
+                    //Lastly takes the user to the /welcome
+                    res.redirect('/welcome');
+                }
+                //If the hash is not a valid hash send them to wrong password page
+                else{
+                    res.redirect('retry_pass.html');
+                }
+            //Error page
+			} else {
+				res.redirect('retry.html');
+            }
+            //end res			
+			res.end();
+		});
+    }
+    else{
+        //If something weird has happened (missing data, corrupted data, whatever) send the user to the general
+        //error page.
+        res.redirect('retry.html');
+        res.end();
+    }
     
 });
 
+
+//The auth section was getting too big. Just redirects people to the welcome page.
+app.get('/welcome', function(req, res){
+    if(req.session.loggedin){
+        res.redirect('welcome.html');
+    }
+    else{
+        res.redirect('retry.html');
+    }
+});
+//This is the code to register a user account. I honestly could have chosen better names for the
+//data being sent this way....
+app.post('/register', async (request, response) =>{
+    //username in the form
+    var username = request.body.reg_playerName;
+    //password in the form
+    var givenPassword = request.body.reg_password;
+    //retype of password in form
+    var passCheck = request.body.reg_password2;
+    //email in the form
+    var email = request.body.reg_email;
+    //If the passwords don't match let the user know.
+    if(givenPassword != passCheck){
+        response.redirect('/retry_passfail.html')
+    }
+    else{
+    //Sets the salt rounds to 15, takes awhile but 2^15 is a nice amount of security for what my laptop can handle
+    const salt = await bcrypt.genSalt(15);
+    //Set the password to the hash value generated from it
+    givenPassword = await bcrypt.hash(givenPassword, salt);
+   
+   /* Breathing space between code chunks
+   Also a bit of rant, HOW DO I MAKE THIS RETURN A POPUP?? I can't figure that one out
+   if any of you guys figure that out let me know so I can get that put in place, I hate all these
+   extra pages...
+   -RB
+   */ 
+       
+    //Make sure the user has actually filled out the form. 
+    if(username && givenPassword && email){
+        //Checks that the username is available. Could be set to do the same for email but I haven't gotten
+        //email validation done yet so meh.
+        connection.query('SELECT username FROM userval WHERE username = ?', [username], function(error, results, fields) {
+            if(error) throw error;
+            //If the results have a length greater than 1 then it means we have a hit. User account is already registered and we shift the user over the error page as a result.
+            if (results.length > 0) {
+                //If anything comes back let them know that username is taken.
+                response.redirect('retry_user.html');
+            }
+            //The user account name is available
+            else{
+                //inserts the values given to us
+                connection.query('INSERT INTO userval (username, password, email) VALUES (?, ?, ?)', [username, givenPassword, email], function(error, results, fields){
+                    if(error) throw error;
+                    console.log('Success')
+                    //Sets the session id (cookie) to true so the player can access other sections of the site.
+                    request.session.loggedin = true;
+                    //sets the session username to the one given by the player(For the welcome page to make it more personalized)
+                    request.session.username = username;
+                    //Lastly takes the user to the /welcome
+                    response.redirect('/welcome');
+                });
+            }
+
+		});
+    }
+    else{
+        response.redirect('retry_reg.html');
+    }
+}
+
+});
+//THIS IS GOING TO BE DELETED UNLESS I DREAM UP A USE.
 app.get('/validate', (request, response) => {
 
 });
-
+//Leaderboard page.
 app.get('/getAll', (request, response) => {
     const db = dbCall.getDbCallInstance();
 
