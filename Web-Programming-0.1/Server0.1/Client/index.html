@@ -14,11 +14,12 @@
 
         </div>
         <div class = "container-mainbody">
+
             <div class = "playerDetails">
                 <div class ="login">
                     <h1>Player Login</h1>
                 </div>
-
+                <form action = "auth" method = "POST">
                 <div class = "textbox" >
                     <i class = "fa fa-lock" aria-hidden = "true"></i>
                     <input type = "text" placeholder="Name" name ="playerName">
@@ -27,7 +28,7 @@
                 </div>
                 <div class = "textbox">
                     <i class = "fa fa-lock" aria-hidden = "true"></i>
-                    <input type = "password" placeholder ="Password" password ="password">
+                    <input type = "password" placeholder ="Password" password ="password" name = "password">
                 </div>
                 <!--
                 <div class = "textbox">
@@ -35,11 +36,11 @@
                     <input type = "text" placeholder="Color" name ="playerColor">
                 </div>
                 -->
+                
                 <div class = "start_game">
-                    <a href = "welcome.html">
-                        <input class = "btn" type = "button" name="start" value = "Login">
-                    </a>
+                    <input class = "btn" type = "submit" name="start" value = "Login">
                 </div>
+                </form>
                 <div class ="start_game">
                     <a href = "guest.html">
                         <input class ="btn" type = "button" name = "guest_login" value= "Play as Guest">
@@ -50,7 +51,6 @@
                         <input class ="btn" type = "button" name = "register" value= "Make Account">
                     </a>
                 </div>
-                
             </div>
 
         </div>
