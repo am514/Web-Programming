@@ -28,14 +28,34 @@ setInterval(function(){
     }
 
     for(var i = 0; i < currentBlocks.length; i++){
+        let collides = false;
         let current =currentBlocks[i];
         let indexblock = document.getElementById("block" + current);
         let blockTop = parseFloat(window.getComputedStyle(indexblock).getPropertyValue("top"));
+        let blockBot = (blockTop + parseFloat(window.getComputedStyle(indexblock).getPropertyValue("height")));
+        let blockLeft = parseFloat(window.getComputedStyle(indexblock).getPropertyValue("left"));
+        let blockRight = (blockLeft + parseFloat(window.getComputedStyle(indexblock).getPropertyValue("width")));
         indexblock.style.top = blockTop + 0.5 + "px";
         if(blockTop == 1200){
             indexblock.style.top = 0 + "px";
             indexblock.style.left = (Math.random() * 760) + "px";
         }
+        if(!(  
+            ( (newCharacter.y + newCharacter.height) < blockTop)
+            || (newCharacter.y > blockBot) 
+            || ((newCharacter.x + newCharacter.width) < blockLeft) 
+            || (newCharacter.x > blockRight)
+            
+            )){
+                indexblock.style.top = -100 + "px";
+                collides = true;
+                score ++;
+                console.log(score);
+
+                
+            }
+
+        
     }
 
 

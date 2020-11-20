@@ -28,6 +28,7 @@ let gameBox = document.getElementById("gamebox"); //define fame box, area where 
 
 class Character {
     constructor(y,width,height,color) { // character attributes as constructor parameter
+        this.character = document.createElement("div");
         this.x = 400; //sets x position , left in css, to 400, half the game box
         this.y = y; //sets y position , top in css, to the value passed in the parameter when new Character is created
         this.width = width;  //sets width to the value passed in the parameter
@@ -43,44 +44,42 @@ class Character {
     sketchCharacter(){
         
         if (!this.sketched){ //if the character has not been spawned in yet then the code below is executed
-            let character = document.createElement("div"); //create a new div for the character in the html
             this.sketched = true; // sets sketched to true
             
-            character.setAttribute("id", "character"); // sets the div to ID
-            character.style.left = this.x + "px"; // sets the left position, x
-            character.style.top = this.y + "px";  // sets the left position, y
-            character.style.width = this.width + "px"; // sets the width
-            character.style.height = this.height + "px"; // sets the width
-            character.style.background = this.color; // sets the color of the character
-            character.style.position = "relative"; 
-            character.style.zIndex = 100;
-            gameBox.appendChild(character); //places the new character element inside of the game box
+            this.character.setAttribute("id", "character"); // sets the div to ID
+            this.character.style.left = this.x + "px"; // sets the left position, x
+            this.character.style.top = this.y + "px";  // sets the left position, y
+            this.character.style.width = this.width + "px"; // sets the width
+            this.character.style.height = this.height + "px"; // sets the width
+            this.character.style.background = this.color; // sets the color of the character
+            this.character.style.position = "relative"; 
+            this.character.style.zIndex = 100;
+            gameBox.appendChild(this.character); //places the new character element inside of the game box
         }
         else{ //if the character has already been spawned in
-            let character = document.getElementById("character"); //points the character element to the new variable character
 
             
             if(this.movingLeft || this.movingRight){ //if the character is moving the code below is ran
                 if(this.x < 0){ //character pops out on the opposite sides if it ever reaches the sides of the game box
                     this.x = 798; 
-                    character.style.left = this.x + "px";
+                    this.character.style.left = this.x + "px";
 
                 }
                 else if(this.x > 800){ //for right side
                     this.x = 0;
-                    character.style.left = this.x + "px";
+                    this.character.style.left = this.x + "px";
                 }
                 else if(this.velocity >= 30){ //if the velocity reaches 20 which we will make the maximum, it does not increase anymore
-                    character.style.left = this.x + "px";
+                    this.character.style.left = this.x + "px";
                 }
                 else{
                     this.velocity *= this.acceleration;  //increases the character velocity by the value of the acceleration
-                    character.style.left = this.x + "px"; //
+                    this.character.style.left = this.x + "px"; //
                 }
                 
             }
             else if(!(this.movingLeft) && !(this.movingRight)){ //if the character is still the velocity will gradually decrease
-                character.style.left = this.x + "px";
+                this.character.style.left = this.x + "px";
             }
             
             
@@ -89,7 +88,7 @@ class Character {
     moveLeft(){ //move left function, sets movingLeft to true and decreases the value of x
         this.movingLeft = true;
         this.movingRight = false;
-        console.log(this.velocity);
+        // console.log(this.velocity);
         this.x -= this.velocity;
         this.sketchCharacter();
 
@@ -97,7 +96,7 @@ class Character {
     moveRight(){ //move left function, sets movingRight to true and increases the value of x
         this.movingLeft = false;
         this.movingRight = true;
-        console.log(this.velocity);
+        // console.log(this.velocity);
         this.x += this.velocity;
         this.sketchCharacter();
     }
@@ -120,6 +119,7 @@ class Character {
 
         }
     }
+    
     
 
 }
@@ -148,4 +148,5 @@ function keyUp(event){
     newCharacter.reduceVelocity();
     
 }
+
 
