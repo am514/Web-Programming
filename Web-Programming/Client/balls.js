@@ -48,9 +48,10 @@ setInterval(function(){
             
             )){
                 indexblock.style.top = -100 + "px";
+                indexblock.style.left = (Math.random() * 760) + "px";
                 collides = true;
                 score ++;
-                console.log(score);
+                console.log("score: " + score);
 
                 
             }
