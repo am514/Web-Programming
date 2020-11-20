@@ -1,27 +1,3 @@
-
-
-// var character =  document.getElementById("character");
-
-// var move = 0;
-
-// var socket = io();
-
-// function movePlayer(e) {
-//     if(e.keyCode == 37) {
-//         move -= 20;
-//         character.style.left = move + "px"; //move left
-//         //socket.emit('keyPress',{inputId:'left',state:true});
-//     }
-//     else if(e.keyCode == 39) {
-//         move += 20;
-//         character.style.left = move + "px"; //move right
-//         //socket.emit('keyPress',{inputId:'right',state:true});
-//     }
-// };
-
-// document.onkeydown =movePlayer;
-
-
 let gameBox = document.getElementById("gamebox"); //define fame box, area where game will take place
 
 
@@ -34,8 +10,8 @@ class Character {
         this.height = height; //sets height to the value passed in the parameter
         this.color = color; //sets color to the value passed in the parameter
         this.sketched = false; //whether the character has been spawned in yet
-        this.velocity = 0; //starting velocity is zero while the 
-        this.acceleration = 2; // acceleration is set to 0.5
+        this.velocity = 10; //starting velocity is zero while the 
+        this.acceleration = 1.25; // acceleration is set to 0.5
         this.movingLeft = false; //moving left set to false
         this.movingRight = false; //moving right set to false
     }
@@ -53,6 +29,7 @@ class Character {
             character.style.height = this.height + "px"; // sets the width
             character.style.background = this.color; // sets the color of the character
             character.style.position = "relative"; 
+            character.style.zIndex = 100;
             gameBox.appendChild(character); //places the new character element inside of the game box
         }
         else{ //if the character has already been spawned in
@@ -69,17 +46,16 @@ class Character {
                     this.x = 0;
                     character.style.left = this.x + "px";
                 }
-                else if(this.velocity >= 20){ //if the velocity reaches 20 which we will make the maximum, it does not increase anymore
+                else if(this.velocity >= 30){ //if the velocity reaches 20 which we will make the maximum, it does not increase anymore
                     character.style.left = this.x + "px";
                 }
                 else{
-                    this.velocity += this.acceleration;  //increases the character velocity by the value of the acceleration
+                    this.velocity *= this.acceleration;  //increases the character velocity by the value of the acceleration
                     character.style.left = this.x + "px"; //
                 }
                 
             }
-            else{ //if the character is still the velocity will gradually decrease
-                this.velocity -= 1;
+            else if(!(this.movingLeft) && !(this.movingRight)){ //if the character is still the velocity will gradually decrease
                 character.style.left = this.x + "px";
             }
             
@@ -91,7 +67,6 @@ class Character {
         this.movingRight = false;
         console.log(this.velocity);
         this.x -= this.velocity;
-        // character.style.left = this.x + "px";
         this.sketchCharacter();
 
     }
@@ -101,7 +76,6 @@ class Character {
         console.log(this.velocity);
         this.x += this.velocity;
         this.sketchCharacter();
-        // character.style.left = this.x + "px";
     }
 
     //////////////////////////////////////
@@ -112,20 +86,14 @@ class Character {
     //////////////////////////////////////
 
     reduceVelocity(){
-        if(this.movingLeft){
-            this.movingLeft = false;
-            while(this.velocity > 0 ){
-                this.sketchCharacter();
-                console.log(this.velocity);
-            }
-            
+        if(!this.movingLeft){
+            this.velocity = 10;
+            this.sketchCharacter();
         }
-        else if(this.movingRight){
-            this.movingRight = false;
-            while(this.velocity > 0 ){
-                this.sketchCharacter();
-                console.log(this.velocity);
-            }
+        else if(!this.movingRight){
+            this.velocity = 10;
+            this.sketchCharacter();
+
         }
     }
     
@@ -137,7 +105,7 @@ class Character {
 
 
 
-let newCharacter = new Character(778,100,20,"green");
+let newCharacter = new Character(778,50,20,"green");
 newCharacter.sketchCharacter();
 document.onkeydown = keyDown;
 function keyDown(event){
