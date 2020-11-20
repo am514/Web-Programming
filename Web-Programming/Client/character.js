@@ -1,20 +1,159 @@
-var character =  document.getElementById("character");
 
-var move = 0;
 
-var socket = io();
+// var character =  document.getElementById("character");
 
-function movePlayer(e) {
-    if(e.keyCode == 37) {
-        move -= 20;
-        character.style.left = move + "px"; //move left
-        //socket.emit('keyPress',{inputId:'left',state:true});
+// var move = 0;
+
+// var socket = io();
+
+// function movePlayer(e) {
+//     if(e.keyCode == 37) {
+//         move -= 20;
+//         character.style.left = move + "px"; //move left
+//         //socket.emit('keyPress',{inputId:'left',state:true});
+//     }
+//     else if(e.keyCode == 39) {
+//         move += 20;
+//         character.style.left = move + "px"; //move right
+//         //socket.emit('keyPress',{inputId:'right',state:true});
+//     }
+// };
+
+// document.onkeydown =movePlayer;
+
+
+let gameBox = document.getElementById("gamebox"); //define fame box, area where game will take place
+
+
+
+class Character {
+    constructor(y,width,height,color) { // character attributes as constructor parameter
+        this.x = 400; //sets x position , left in css, to 400, half the game box
+        this.y = y; //sets y position , top in css, to the value passed in the parameter when new Character is created
+        this.width = width;  //sets width to the value passed in the parameter
+        this.height = height; //sets height to the value passed in the parameter
+        this.color = color; //sets color to the value passed in the parameter
+        this.sketched = false; //whether the character has been spawned in yet
+        this.velocity = 0; //starting velocity is zero while the 
+        this.acceleration = 2; // acceleration is set to 0.5
+        this.movingLeft = false; //moving left set to false
+        this.movingRight = false; //moving right set to false
     }
-    else if(e.keyCode == 39) {
-        move += 20;
-        character.style.left = move + "px"; //move right
-        //socket.emit('keyPress',{inputId:'right',state:true});
-    }
-};
 
-document.onkeydown =movePlayer;
+    sketchCharacter(){
+        
+        if (!this.sketched){ //if the character has not been spawned in yet then the code below is executed
+            let character = document.createElement("div"); //create a new div for the character in the html
+            this.sketched = true; // sets sketched to true
+            
+            character.setAttribute("id", "character"); // sets the div to ID
+            character.style.left = this.x + "px"; // sets the left position, x
+            character.style.top = this.y + "px";  // sets the left position, y
+            character.style.width = this.width + "px"; // sets the width
+            character.style.height = this.height + "px"; // sets the width
+            character.style.background = this.color; // sets the color of the character
+            character.style.position = "relative"; 
+            gameBox.appendChild(character); //places the new character element inside of the game box
+        }
+        else{ //if the character has already been spawned in
+            let character = document.getElementById("character"); //points the character element to the new variable character
+
+            
+            if(this.movingLeft || this.movingRight){ //if the character is moving the code below is ran
+                if(this.x < 0){ //character pops out on the opposite sides if it ever reaches the sides of the game box
+                    this.x = 798; 
+                    character.style.left = this.x + "px";
+
+                }
+                else if(this.x > 800){ //for right side
+                    this.x = 0;
+                    character.style.left = this.x + "px";
+                }
+                else if(this.velocity >= 20){ //if the velocity reaches 20 which we will make the maximum, it does not increase anymore
+                    character.style.left = this.x + "px";
+                }
+                else{
+                    this.velocity += this.acceleration;  //increases the character velocity by the value of the acceleration
+                    character.style.left = this.x + "px"; //
+                }
+                
+            }
+            else{ //if the character is still the velocity will gradually decrease
+                this.velocity -= 1;
+                character.style.left = this.x + "px";
+            }
+            
+            
+        }
+    }
+    moveLeft(){ //move left function, sets movingLeft to true and decreases the value of x
+        this.movingLeft = true;
+        this.movingRight = false;
+        console.log(this.velocity);
+        this.x -= this.velocity;
+        // character.style.left = this.x + "px";
+        this.sketchCharacter();
+
+    }
+    moveRight(){ //move left function, sets movingRight to true and increases the value of x
+        this.movingLeft = false;
+        this.movingRight = true;
+        console.log(this.velocity);
+        this.x += this.velocity;
+        this.sketchCharacter();
+        // character.style.left = this.x + "px";
+    }
+
+    //////////////////////////////////////
+    //////code below tries but fails//////
+    /////to implement decceleration///////
+    ////////////////instead //////////////
+    //////////////////////////////////////
+    //////////////////////////////////////
+
+    reduceVelocity(){
+        if(this.movingLeft){
+            this.movingLeft = false;
+            while(this.velocity > 0 ){
+                this.sketchCharacter();
+                console.log(this.velocity);
+            }
+            
+        }
+        else if(this.movingRight){
+            this.movingRight = false;
+            while(this.velocity > 0 ){
+                this.sketchCharacter();
+                console.log(this.velocity);
+            }
+        }
+    }
+    
+
+}
+
+
+
+
+
+
+let newCharacter = new Character(778,100,20,"green");
+newCharacter.sketchCharacter();
+document.onkeydown = keyDown;
+function keyDown(event){
+    event = event || window.event;
+    if (event.keyCode == "37") {
+        newCharacter.moveLeft();
+    }
+    else if(event.keyCode == "39"){
+        newCharacter.moveRight();
+    }
+}
+
+document.onkeyup = keyUp;
+function keyUp(event){
+    event = event || window.event;
+    newCharacter.reduceVelocity();
+    
+}
+
