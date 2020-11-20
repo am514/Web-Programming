@@ -121,14 +121,16 @@ body{
     padding: 20px;
 }
 
-#block{
-    width: 50px;
+.block{
+    width: 20px;
     height: 20px;
+    border-radius: 50%;
     background-color: white;
     position: relative;
-    top: 100px;
-    left: 100px;
-    animation: block 2s infinite linear;
+    top: -1200px;
+    margin-top: -20px;
+    /* animation: block 2s infinite linear; */
+
 }
 
 #character{
