@@ -85,6 +85,13 @@ class Character {
 
         }
     }
+    // Drawing all the player blocks on the gamePage
+    socket.on('newPositions',function(data){
+		gameBox.clearRect(0,0,800,800);
+		for(var i = 0 ; i < data.length; i++)
+			gameBox.fillRect(data[i].number,data[i].x,data[i].y);
+	   }
+
     moveLeft(){ //move left function, sets movingLeft to true and decreases the value of x
         this.movingLeft = true;
         this.movingRight = false;
