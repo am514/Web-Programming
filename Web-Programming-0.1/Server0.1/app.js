@@ -337,8 +337,7 @@ sock.on('newMove', function(move){
     sock.emit('newMove', move)
 })
 
-// updates all the players positon by running every 50 milliseconds
-// (20fps)
+// updates all the players positon by running every 25 milli second
 setInterval(function(){
 	var pack = [];
 	for(var i in PLAYER_LIST){
@@ -358,7 +357,7 @@ setInterval(function(){
 
 
 
-},1000/20);
+},1000/25);
 
 
 
