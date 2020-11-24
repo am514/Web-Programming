@@ -133,6 +133,16 @@ body{
 
 }
 
+#increase-size{
+    background-image: url("increase-size.jpeg");
+    width: 100%;
+    position: relative;
+    top: -100px;
+    background-size: 100% 100%;
+    border-radius: 50%;
+
+}
+
 #character{
     width: 40px;
     height: 20px;
@@ -140,6 +150,7 @@ body{
     position: relative;
     left: 0px;
     top: 758px;
+    
 
 }
 
