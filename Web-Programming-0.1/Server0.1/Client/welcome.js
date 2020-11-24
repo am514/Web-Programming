@@ -14,19 +14,8 @@ document.querySelector('table tbody').addEventListener('click', function(event) 
     }
 });
 
-const updateBtn = document.querySelector('#update-row-btn');
-const searchBtn = document.querySelector('#search-btn');
-
-searchBtn.onclick = function() {
-    const searchValue = document.querySelector('#search-input').value;
-
-    fetch('http://localhost:5000/search/' + searchValue)
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
-}
-
 function deleteRowById(id) {
-    fetch('http://localhost:5000/delete/' + id, {
+    fetch('http://localhost:5001/delete/' + id, {
         method: 'DELETE'
     })
     .then(response => response.json())
@@ -49,7 +38,7 @@ updateBtn.onclick = function() {
 
     console.log(updateNameInput);
 
-    fetch('http://localhost:5000/update', {
+    fetch('http://localhost:5001/update', {
         method: 'PATCH',
         headers: {
             'Content-type' : 'application/json'
@@ -75,7 +64,7 @@ addBtn.onclick = function () {
     const name = nameInput.value;
     nameInput.value = "";
 
-    fetch('http://localhost:5000/insert', {
+    fetch('http://localhost:5001/insert', {
         headers: {
             'Content-type': 'application/json'
         },
@@ -118,6 +107,7 @@ function insertRowIntoTable(data) {
 function loadHTMLTable(data) {
     const table = document.querySelector('table tbody');
 
+    console.log(data);
     if (data.length === 0) {
         table.innerHTML = "<tr><td class='no-data' colspan='5'>No Data</td></tr>";
         return;
@@ -129,9 +119,9 @@ function loadHTMLTable(data) {
         tableHtml += "<tr>";
         tableHtml += `<td>${id}</td>`;
         tableHtml += `<td>${name}</td>`;
-        tableHtml += `<td>${new Date(date_added).toLocaleString()}</td>`;
-        tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</td>`;
-        tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`;
+        //tableHtml += `<td>${new Date(date_added).toLocaleString()}</td>`;
+        //tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</td>`;
+        //tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`;
         tableHtml += "</tr>";
     });
 
