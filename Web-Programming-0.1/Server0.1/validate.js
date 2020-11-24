@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
     host: process.env.HOST,
     user: process.env.USER,
     password: process.env.PASSWORD,
-    database: process.env.DATABASE,
+    database: process.env.USERVAL,
     port: process.env.DB_PORT
 });
 //connect to mysql and throw an error in the event it doesn't work

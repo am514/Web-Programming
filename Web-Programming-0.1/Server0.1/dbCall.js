@@ -26,7 +26,7 @@ class dbCall{
     async getAllData(){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = 'SELECT * FROM `leaderboard`;';
+                const query = 'SELECT (username, score) FROM `userval`;';
 
                 connection.query(query, (err, results) =>{
                     if (err) reject(new Error(err.message));
