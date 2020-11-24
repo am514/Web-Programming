@@ -256,20 +256,25 @@ tmpMSG = [];
 // This is for creating the player
 var Player = function(id){
 	var self = {
-		x:0,
-		y:0,
-		id:id,
-		number:"" + Math.floor(10 * Math.random()),
-		pressingRight:false,
-		pressingLeft:false,
-		maxSpd:10,
+		self.character = document.createElement("div");
+		self.x = 400;
+		self.y = 778;
+		self.width = 50;
+		self.heigh = 20;
+		self.color = "green";
+		self.sketched = false;
+		self.velocity = 10;
+		self.acceleration = 1.25;
+		self.movingLeft = false;
+		self.movingRight = false;
+
 	}
   // for updating their movement
 	self.updatePosition = function(){
 		if(self.pressingRight)
-			self.x += self.maxSpd;
+			self.x += self.velocity;
 		if(self.pressingLeft)
-			self.x -= self.maxSpd;
+			self.x -= self.velocity;
 	}
 	return self;
 }
@@ -355,7 +360,7 @@ setInterval(function(){
 
 
 
-},1000/20);
+},1000/25);
 
 
 
