@@ -105,10 +105,10 @@ app.post("/auth", async function(req, res){
         connection.query('SELECT password FROM userval WHERE username = ?', [playerName], async function(error, results, fields) {
             if(error) throw error;
            //If there are no results don't bother doing any checks, send them to error page.
-            if (results.length > 0) { 
+            if (results.length > 0) {
                 //console.log(req.body.password);
                 //console.log(results[0].password);
-                
+
                 //Check the validity of pass hash and store it as a boolean
                 const match = await bcrypt.compare(req.body.password, results[0].password);
                 //If the hash is a valid hash
@@ -129,7 +129,7 @@ app.post("/auth", async function(req, res){
 			} else {
 				res.redirect('retry.html');
             }
-            //end res			
+            //end res
 			res.end();
 		});
     }
@@ -139,7 +139,7 @@ app.post("/auth", async function(req, res){
         res.redirect('retry.html');
         res.end();
     }
-    
+
 });
 
 
@@ -172,15 +172,15 @@ app.post('/register', async (request, response) =>{
     const salt = await bcrypt.genSalt(15);
     //Set the password to the hash value generated from it
     givenPassword = await bcrypt.hash(givenPassword, salt);
-   
+
    /* Breathing space between code chunks
    Also a bit of rant, HOW DO I MAKE THIS RETURN A POPUP?? I can't figure that one out
    if any of you guys figure that out let me know so I can get that put in place, I hate all these
    extra pages...
    -RB
-   */ 
-       
-    //Make sure the user has actually filled out the form. 
+   */
+
+    //Make sure the user has actually filled out the form.
     if(username && givenPassword && email){
         //Checks that the username is available. Could be set to do the same for email but I haven't gotten
         //email validation done yet so meh.
@@ -254,20 +254,25 @@ tmpMSG = [];
 // This is for creating the player
 var Player = function(id){
 	var self = {
-		x:0,
-		y:0,
-		id:id,
-		number:"" + Math.floor(10 * Math.random()),
-		pressingRight:false,
-		pressingLeft:false,
-		maxSpd:10,
+				self.character = document.createElement("div");
+				self.x = 400; //sets x position , left in css, to 400, half the game box
+				self.y = 778; //sets y position , top in css, to the value passed in the parameter when new Character is created
+				self.width = 50;  //sets width to the value passed in the parameter
+				self.height = 20; //sets height to the value passed in the parameter
+				self.color = "green"; //sets color to the value passed in the parameter
+				self.sketched = false; //whether the character has been spawned in yet
+				self.velocity = 10; //starting velocity is zero while the
+				self.acceleration = 1.25; // acceleration is set to 0.5
+				self.movingLeft = false; //moving left set to false
+				self.movingRight = false; //moving right set to false
+
 	}
   // for updating their movement
 	self.updatePosition = function(){
 		if(self.pressingRight)
-			self.x += self.maxSpd;
+			self.x += self.velocity;
 		if(self.pressingLeft)
-			self.x -= self.maxSpd;
+			self.x -= self.velocity;
 	}
 	return self;
 }
