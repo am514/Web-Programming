@@ -150,17 +150,23 @@ app.post("/auth", async function(req, res){
     
 });
 app.get('/player_pos', function(req, res){
+    //console.log(req.body);
     connection.query('SELECT position FROM userval', function(error, result, fields){
         if(error) throw error;
         else{
+            //console.log(result);
             res.json(result);
+            
         }
     });
+    
 });
-
+//For Ajax call, takes in a json object with the xposition of the player, then it gets the session username from the
+//users session data, this data is then deposited into the database for future retrieval.
 app.post('/user_pos', function(req, res){
     var user_pos = req.body.xpos;
-    var player = req.session.playerName;
+    var player = req.session.username;
+    //console.log(user_pos);
     connection.query('UPDATE userval SET position = ? WHERE username = ?', [user_pos, player], function(error, results, fields){
         if (error) throw error;
     });
@@ -246,12 +252,12 @@ app.post('/register', async (request, response) =>{
 app.get('/validate', (request, response) => {
 
 });
-//Leaderboard page.
+//Leaderboard page get request moved out to the dbcall file.
 app.get('/getAll', (request, response) => {
     const db = dbCall.getDbCallInstance();
 
     const result = db.getAllData();
-
+    //Prepares the package and then sends it out.
     result
     .then(data => response.json({data : data}))
     .catch(err=> console.log(err));
