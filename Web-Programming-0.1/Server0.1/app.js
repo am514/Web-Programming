@@ -63,9 +63,14 @@ app.use(express.static(__dirname + '/Client'))
 
 //This call will serve the gamePage for now
 app.get("/playgame", function(req, res){
-
-    res.sendFile(__dirname + '/Client/gamePage.html');
+    if(req.session.loggedin == true){
+        res.sendFile(__dirname + '/Client/gamePage.html');
+    }
+    else{
+        res.redirect('retry.html');
+    }
 });
+
 //When the user calls "/" they will be taken to the index page, unless they have a valid session.
 app.get("/", function(req, res){
     if(session.loggedin == true){
@@ -103,7 +108,8 @@ app.post("/auth", async function(req, res){
     console.log(password);
     //If the password and username sections are filled out then we check if it is a valid username.
     if(password && playerName){
-        //SQL query, to grab the password associated with a given username.
+        //SQL query, to grab the password associated with a given username. Uses string escaping to keep people from injecting into the 
+        //db call.
         connection.query('SELECT password FROM userval WHERE username = ?', [playerName], async function(error, results, fields) {
             if(error) throw error;
            //If there are no results don't bother doing any checks, send them to error page.
@@ -143,7 +149,27 @@ app.post("/auth", async function(req, res){
     }
     
 });
+app.get('/player_pos', function(req, res){
+    connection.query('SELECT position FROM userval', function(error, result, fields){
+        if(error) throw error;
+        else{
+            res.json(result);
+        }
+    });
+});
 
+app.post('/user_pos', function(req, res){
+    var user_pos = req.body.xpos;
+    var player = req.session.playerName;
+    connection.query('UPDATE userval SET position = ? WHERE username = ?', [user_pos, player], function(error, results, fields){
+        if (error) throw error;
+    });
+});
+
+app.post('/signout', function(req, res){
+    req.session.loggedin = false;
+    res.redirect('index.html');
+});
 
 //The auth section was getting too big. Just redirects people to the welcome page.
 app.get('/welcome', function(req, res){
@@ -256,17 +282,17 @@ tmpMSG = [];
 // This is for creating the player
 var Player = function(id){
 	var self = {
-		self.character = document.createElement("div");
-		self.x = 400;
-		self.y = 778;
-		self.width = 50;
-		self.heigh = 20;
-		self.color = "green";
-		self.sketched = false;
-		self.velocity = 10;
-		self.acceleration = 1.25;
-		self.movingLeft = false;
-		self.movingRight = false;
+		character : document.createElement("div"),
+		x : 400,
+		y : 778,
+		width : 50,
+		height : 20,
+		color : "green",
+		sketched : false,
+		velocity : 10,
+		acceleration : 1.25,
+		movingLeft : false,
+		movingRight : false,
 
 	}
   // for updating their movement
@@ -293,6 +319,7 @@ sock.sockets.on('connection', function(socket){
     //TEMP: let us know if someone connects and then post the total, delete after done testing the socket connections
     //or transition this into an update that will be listed on the chat in a non-obtrusive way
     sock.sockets.emit("New user connected, total online " + numSock);
+    console.log('Success Socket');
 })
 sock.sockets.on('disconnect', function(socket){
     //Keeps tabs of total number of people connected to the socket.
