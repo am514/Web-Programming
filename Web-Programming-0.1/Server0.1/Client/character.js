@@ -1,5 +1,7 @@
 // var character =  document.getElementById("character");
 
+//const session = require("express-session");
+
 // var move = 0;
 
 // var socket = io();
@@ -20,11 +22,11 @@
 // document.onkeydown =movePlayer;
 
 
-
+src="http://code.jquery.com/jquery-1.6.2.min.js";
 
 let gameBox = document.getElementById("gamebox"); //define fame box, area where game will take place
 
-
+let player_postions;
 
 class Character {
     constructor() { // character attributes as constructor parameter
@@ -104,8 +106,40 @@ class Character {
         // console.log(this.velocity);
         this.x += this.velocity;
         this.sketchCharacter();
-    }
 
+
+
+    }
+    //This code queries the database, and sends the position of the user. It is then able to be read by the
+    //server and then sent out to all clients in the sketch intervals.
+    sendData(){
+        //alert("test");
+        let pos = JSON.stringify({"xpos" : this.x});
+        let xhr = new XMLHttpRequest();
+        let url = "user_pos"
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.send(pos);
+
+        // $(document).ready(function(){
+        //     $.ajax({
+        //         type: "POST",
+        //         dataType: "json",
+        //         contentType: "application/json",
+        //         data : {"xpos" : 4},
+        //         url:"/user_pos",
+        //         success: function(result){
+        //            alert("Success");
+        //         },
+        //         error: function (xhr, ajaxOptions, error){
+        //             alert(xhr.status);
+        //             alert(thrownError);
+        //         }
+        //     });
+        // });
+    }
     //////////////////////////////////////
     //////code below tries but fails//////
     /////to implement decceleration///////
@@ -130,9 +164,23 @@ class Character {
 }
 
 
+// setInterval(function(){
+//     let xhr1 = new XMLHttpRequest();
+//     let url = "player_pos"
+//     xhr1.open("GET", url, true);
+//     xhr1.send();
 
+//     xhr.onload = function(){
+//         if (xhr1.status != 200){
+//             alert("Server failure.");
+//         }
+//     };
+//     xhr.onprogress = function(response){
 
-
+//         player_postions = response;
+        
+//     };
+// }, 2);
 
 let newCharacter = new Character();
 newCharacter.sketchCharacter();
@@ -145,7 +193,23 @@ function keyDown(event){
     else if(event.keyCode == "39"){
         newCharacter.moveRight();
     }
+    newCharacter.sendData();
+    drawGuest();
 }
+function drawGuest(){
+    xhr1.open("GET", url, true);
+    xhr1.send();
+
+    xhr.onload = function(){
+        if (xhr1.status != 200){
+            alert("Server failure.");
+        }
+    };
+    xhr.onprogress = function(response){
+
+        alert("Position Received");
+    }
+};
 
 // document.onkeyup = keyUp;
 // function keyUp(event){

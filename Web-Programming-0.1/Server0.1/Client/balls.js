@@ -1,14 +1,19 @@
+const { getDbCallInstance } = require("../dbCall");
+
 let counter = 0;
 let score = 0;
 let currentBlocks = [];
 let currentPowerUp =[];
 let done = false;
 let collected = false;
+let oUsers = [];
 // create falling block and add it to html
+
 setInterval(function(){ 
 
+   
     let blockLast = document.getElementById("block" + (counter -1));
-
+    
     if(counter>0){
         var blockLastTop = parseInt(window.getComputedStyle(blockLast).getPropertyValue("top"));
     }
@@ -109,6 +114,7 @@ setInterval(function(){
                         
                     }
 
+
     }
 
 
@@ -147,7 +153,6 @@ setInterval(function(){
     //         }
 
     // }
-        
     
 
 
