@@ -12,6 +12,7 @@ let block = document.createElement("div");
 block.setAttribute("id", "block");
 block.addEventListener('animationiteration', () => {
     let random = (Math.random() * 800);
+    console.log(random);
     block.style.left = random +"px";
 });
 gameBox.appendChild(block);

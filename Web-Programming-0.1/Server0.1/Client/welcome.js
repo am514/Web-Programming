@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:5001/getAll')
     .then(response => response.json())
-    .then(response => loadHTMLTable(response));
+    .then(data => loadHTMLTable(data['data']));
     
 });
 
@@ -15,15 +15,13 @@ function loadHTMLTable(data) {
     }
 
     let tableHtml = "";
-    
+    let inc = 0;
     data.forEach(function ({username, score}) {
         tableHtml += "<tr>";
-        tableHtml += `<td>${username}</td>`;
-        tableHtml += `<td>${score}</td>`;
-        tableHtml += `<td>${new Date(date_added).toLocaleString()}</td>`;
-        tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</td>`;
-        tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`;
+        tableHtml += "<td>" + data[inc].username + "</td>";
+        tableHtml += "<td>" + data[inc].score + "</td>";
         tableHtml += "</tr>";
+        inc++
     });
 
     table.innerHTML += tableHtml;

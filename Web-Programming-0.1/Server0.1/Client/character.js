@@ -123,22 +123,6 @@ class Character {
 
         xhr.send(pos);
 
-        // $(document).ready(function(){
-        //     $.ajax({
-        //         type: "POST",
-        //         dataType: "json",
-        //         contentType: "application/json",
-        //         data : {"xpos" : 4},
-        //         url:"/user_pos",
-        //         success: function(result){
-        //            alert("Success");
-        //         },
-        //         error: function (xhr, ajaxOptions, error){
-        //             alert(xhr.status);
-        //             alert(thrownError);
-        //         }
-        //     });
-        // });
     }
     //////////////////////////////////////
     //////code below tries but fails//////
@@ -197,12 +181,18 @@ function keyDown(event){
     drawGuest();
 }
 function drawGuest(){
+    let url = 'player_pos'
+    let xhr1 = new XMLHttpRequest();
+
     xhr1.open("GET", url, true);
     xhr1.send();
 
     xhr.onload = function(){
         if (xhr1.status != 200){
             alert("Server failure.");
+        }
+        else{
+            alert("Test");
         }
     };
     xhr.onprogress = function(response){
