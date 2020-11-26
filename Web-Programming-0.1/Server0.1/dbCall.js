@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
     host: process.env.HOST,
     user: process.env.USER,
     password: process.env.PASSWORD,
-    database: process.env.USERVALDB,
+    database: process.env.DATABASE,
     port: process.env.DB_PORT
 });
 
@@ -26,7 +26,7 @@ class dbCall{
     async getAllData(){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = 'SELECT username, score FROM `userval`;';
+                const query = 'SELECT * FROM `leaderboard`;';
 
                 connection.query(query, (err, results) =>{
                     if (err) reject(new Error(err.message));
