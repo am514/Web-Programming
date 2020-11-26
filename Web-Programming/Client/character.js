@@ -41,6 +41,7 @@ class Character {
         this.acceleration = 1.25; // acceleration is set to 0.5
         this.movingLeft = false; //moving left set to false
         this.movingRight = false; //moving right set to false
+        this.playerLife = 3;
     }
 
     sketchCharacter(){
@@ -104,6 +105,13 @@ class Character {
         // console.log(this.velocity);
         this.x += this.velocity;
         this.sketchCharacter();
+    }
+
+    lifeDown(){
+        this.playerLife = this.playerLife - 1;
+    }
+    lifeUp(){
+        this.playerLife = this.playerLife + 1;
     }
 
     //////////////////////////////////////
