@@ -2,10 +2,14 @@
 FALLING BLOCKS GAME README
 File Structure: Web Programming represents the code present prior to decision to refactor all client side code, lacks full representation of functionality and system.
 Web-Programming0.1 represents code state from 15/11/2020 on. On completion of integration will represent the full prototype.
+
+LINK TO GAME:
+
 Game Description:
--Falling Blocks is a competitive block dodging game. Each user will attempt to achieve the highest score on the leaderboard for the rank and prestige associated with it.
+-Falling Blocks is a competitive block grabbing and dodging game. Each user will attempt to achieve the highest score on the leaderboard for the rank and prestige associated with it.
 -Players must contend with a series of random falling objects trying to slay the player and end their score, each block dodged provides points to the player.
 -At the same time the player can see the actions of another play while they play and have that as an additional distraction.
+
 
 Potential Add-Ons: 
 ChatBox: Will allow all players who are in the game to communicate with one another, discuss strategies, and set up games.
@@ -20,10 +24,11 @@ Server Setup:
 Server setup is simple. In the event a person would like to utilize the code herein to start their own server there are 8 steps.
 1:Download MySQL, and Node.JS
 2:In node.js, install the packages found in the package.json file and make sure they are up to date.
-3:Using Xampp, MySQL Editor, or the terminal, create a database with the following columns id, username, password, email, score, position. The names are unimportant but will be needed later.
+3:Using Xampp, MySQL Editor, or the terminal, create a database with the following columns id, username, password, email, score, position, and games played. The names are unimportant if you
+want to edit the variables yourself but will be needed later.
 4: Configure a .env file to contain, the port being used, the names of both databases, the name/s or the user accounts with priviliges to the SQL databases and the host. Utilize the 
 names used in the other parts of the file, or create your own and update the files accordingly.
-5: Initialize nodemon server (nodemon is used to allow continual updates to the code and to allow for simpler restarts)
-6: Download localtunnel.me.
-7: Make Http tunnel using localtunnel and point it at the port your nodemon server is set to. 
-8: Post the link to your localtunnel domain and let people know where to play on your server!
+5: Initialize nodemon server (nodemon is used to allow continual updates to the code and to allow for simpler restarts), alternatively use plain old node.
+6: Download localtunnel.me or ngrok.
+7: Make Http tunnel using localtunnel or ngrok and point it at the port your nodemon server is set to. 
+8: Post the link to your localtunnel or ngrok domain and let people know where to play on your server!
