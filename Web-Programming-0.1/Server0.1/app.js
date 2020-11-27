@@ -64,6 +64,10 @@ app.use(express.static(__dirname + '/Client'))
 //This call will serve the gamePage for now
 app.get("/playgame", function(req, res){
     if(req.session.loggedin == true){
+        connection.query('UPDATE userval SET gamesplayed = gamesplayed + 1 WHERE username = ?', [req.session.username], function(err, res, fields){
+            if(err) throw err;
+        });
+
         res.sendFile(__dirname + '/Client/gamePage.html');
     }
     else{
@@ -272,6 +276,30 @@ app.get('/getAll', (request, response) => {
     .catch(err=> console.log(err));
 
 });
+
+app.post('/setScore', (request, response)=>{
+    var username = request.session.username;
+    var score = request.body.score;
+    console.log(score);
+    console.log(username);
+    connection.query('SELECT score FROM userval WHERE username = ?',[username], function(err, res, fields){
+        if(err) throw err;
+        else {
+            console.log(res)
+            if(score > res[0].score){
+                connection.query('UPDATE userval SET score = ? WHERE username = ?', [score, username], function(err, res, fields){
+                    if(err) throw err;
+                });
+            }
+        }
+    });
+});
+
+//When the user has died, redirect them to the homepage.
+app.post('/onKill', (request, response)=>{
+    response.redirect('/welcome');
+});
+
 // Mubeen code
 
 //list of sockets
