@@ -148,13 +148,33 @@ body{
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: white;
+    background-color: yellow;
     position: relative;
     top: -1200px;
     left: -20px;
     /*animation: block 2s infinite linear;*/
-}
 
+    
+}
+.rocks{
+    background-image: url("rock.jpg");
+    width: 30px;
+    height: 30px;
+    position: relative;
+    background-size: 100% 100%;
+    border-radius: 50%;
+}
+#score{
+    top: 20px;
+    position: absolute;
+    right: 0px;
+
+}
+#playerLife{
+    top: 0px;
+    position: absolute;
+    right: 0px;
+}
 #character{
     width: 40px;
     height: 20px;

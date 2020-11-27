@@ -1,7 +1,5 @@
 // var character =  document.getElementById("character");
 
-//const session = require("express-session");
-
 // var move = 0;
 
 // var socket = io();
@@ -22,11 +20,11 @@
 // document.onkeydown =movePlayer;
 
 
-src="http://code.jquery.com/jquery-1.6.2.min.js";
+
 
 let gameBox = document.getElementById("gamebox"); //define fame box, area where game will take place
 
-let player_postions;
+
 
 class Character {
     constructor() { // character attributes as constructor parameter
@@ -43,6 +41,7 @@ class Character {
         this.acceleration = 1.25; // acceleration is set to 0.5
         this.movingLeft = false; //moving left set to false
         this.movingRight = false; //moving right set to false
+        this.playerLife = 3;
     }
 
     sketchCharacter(){
@@ -106,24 +105,28 @@ class Character {
         // console.log(this.velocity);
         this.x += this.velocity;
         this.sketchCharacter();
-
-
-
     }
-    //This code queries the database, and sends the position of the user. It is then able to be read by the
-    //server and then sent out to all clients in the sketch intervals.
+
+    lifeDown(){
+        this.playerLife = this.playerLife - 1;
+    }
+    lifeUp(){
+        this.playerLife = this.playerLife + 1;
+    }
+    
     sendData(){
         //alert("test");
         let pos = JSON.stringify({"xpos" : this.x});
         let xhr = new XMLHttpRequest();
         let url = "user_pos"
-
+    
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
-
+    
         xhr.send(pos);
-
+    
     }
+
     //////////////////////////////////////
     //////code below tries but fails//////
     /////to implement decceleration///////
@@ -148,23 +151,9 @@ class Character {
 }
 
 
-// setInterval(function(){
-//     let xhr1 = new XMLHttpRequest();
-//     let url = "player_pos"
-//     xhr1.open("GET", url, true);
-//     xhr1.send();
 
-//     xhr.onload = function(){
-//         if (xhr1.status != 200){
-//             alert("Server failure.");
-//         }
-//     };
-//     xhr.onprogress = function(response){
 
-//         player_postions = response;
-        
-//     };
-// }, 2);
+
 
 let newCharacter = new Character();
 newCharacter.sketchCharacter();
@@ -177,9 +166,15 @@ function keyDown(event){
     else if(event.keyCode == "39"){
         newCharacter.moveRight();
     }
-    newCharacter.sendData();
-    drawGuest();
+    newCharacter.sendData()
 }
+
+// document.onkeyup = keyUp;
+// function keyUp(event){
+//     event = event || window.event;
+//     newCharacter.reduceVelocity();
+    
+// }
 function drawGuest(){
     let url = 'player_pos'
     let xhr1 = new XMLHttpRequest();
@@ -207,3 +202,4 @@ function drawGuest(){
 //     newCharacter.reduceVelocity();
     
 // }
+
